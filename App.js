@@ -1,10 +1,11 @@
+// [2,0,0,2] => [0,0,2,2]
 function fillEmptyElements(arr) {
   for (let i = 3; i > 0; i--) {
     // چک کردن کل درایه ها برای خالی بودن
     if (arr[i] === 0) {
       // روی خانه های کناری حرکت می کنیم
       for (let j = i - 1; j >= 0; j--) {
-        // تا زمانی که یک حانه پر پیدا کنیم ادامه می دهیم
+        // تا زمانی که یک خانه پر پیدا کنیم ادامه می دهیم
         if (arr[j] !== 0) {
           arr[i] = arr[j];
           arr[j] = 0;
@@ -18,7 +19,6 @@ function fillEmptyElements(arr) {
 function moveRow(arr) {
   // پر کردن خانه های که ابتدا صفر هستند
   fillEmptyElements(arr);
-  // تا زمانی که دو خانه کنار هم برابر و مخالف صفر باشند ادامه می دهد
   let i = 3;
   while (i > 0) {
     // اگر یک خانه با خانه کناری برابر باشد آن را با خانه کناری جمع می کند و حانه کناری را صفر می کند
@@ -72,7 +72,7 @@ function moveArrayToLeft(array) {
 function moveArrayToBottom(array) {
   let arr = [...array];
   for (let i = 0; i < 4; i++) {
-    // ستون آی شامل خانه آی از هر یک از آرایه هاست
+    // column1 : [row1[0] , row2[0] , row3[0] , row4[0]]
     let column = arr.map((row) => row[i]);
     column = moveRowToBottom(column);
     for (let j = 0; j < 4; j++) {
@@ -85,7 +85,7 @@ function moveArrayToBottom(array) {
 function moveArrayToTop(array) {
   let arr = [...array];
   for (let i = 0; i < 4; i++) {
-    // ستون آی شامل خانه آی از هر یک از آرایه هاست
+    // column1 : [row1[0] , row2[0] , row3[0] , row4[0]]
     let column = arr.map((row) => row[i]);
     column = moveRowToTop(column);
     for (let j = 0; j < 4; j++) {
@@ -105,11 +105,14 @@ let initialNumbers = [
 ];
 
 function fillRandomElement(array) {
-  let randomRow = Math.ceil(Math.random() * 3);
-  let randomColumn = Math.ceil(Math.random() * 3);
-  let randomElement = array[randomRow][randomColumn];
-  if (randomElement === 0) {
-    array[randomRow][randomColumn] = 2;
+  for (let i = 0; i < 10; i++) {
+    let randomRow = Math.ceil(Math.random() * 3);
+    let randomColumn = Math.ceil(Math.random() * 3);
+    let randomElement = array[randomRow][randomColumn];
+    if (randomElement === 0) {
+      array[randomRow][randomColumn] = 2;
+      break;
+    }
   }
 }
 
@@ -124,7 +127,7 @@ function getBoxStyle(number) {
     64: { bg_color: "#F26142", color: "#fff" },
     128: { bg_color: "#E9CF76", color: "#fff" },
     256: { bg_color: "#EECC67", color: "#fff" },
-    528: { bg_color: "#EBC75B", color: "#fff" },
+    512: { bg_color: "#EBC75B", color: "#fff" },
     1024: { bg_color: "#E7C258", color: "#fff" },
     2048: { bg_color: "#E7BD4D", color: "#fff" },
   };
@@ -138,7 +141,7 @@ function fillBoxes(initialNumbers) {
     const box = document.getElementById("box" + i);
     box.innerText = allNums[i - 1] || "";
 
-    //  تغییر استابل در صورت تغییر عدد خانه
+    // change box style with chnage this number
     const boxStyle = getBoxStyle(allNums[i - 1]);
     box.style.backgroundColor = boxStyle.bg_color;
     box.style.color = boxStyle.color;
@@ -163,7 +166,7 @@ function moveHandler(moveMethod) {
   fillBoxes(initialNumbers);
 }
 
-// windows events
+// pc events
 document.onkeydown = (e) => {
   switch (e.key) {
     case "ArrowLeft": {
