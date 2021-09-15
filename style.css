@@ -44,13 +44,14 @@ body {
 
 .numbers_boxes {
   background-color: #bcada0;
+  box-sizing: content-box;
   height: 300px;
   width: 300px;
   padding: 3px;
   border-radius: 5px;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-around;
   flex-wrap: wrap;
 }
 
