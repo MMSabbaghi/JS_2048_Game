@@ -1,4 +1,4 @@
-// [2,0,0,2] => [0,0,2,2]
+// ex : [2,0,0,2] => [0,0,2,2]
 function fillEmptyElements(arr) {
   for (let i = 3; i > 0; i--) {
     // چک کردن کل درایه ها برای خالی بودن
@@ -19,16 +19,12 @@ function fillEmptyElements(arr) {
 function moveRow(arr) {
   // پر کردن خانه های که ابتدا صفر هستند
   fillEmptyElements(arr);
-  let i = 3;
-  while (i > 0) {
-    // اگر یک خانه با خانه کناری برابر باشد آن را با خانه کناری جمع می کند و حانه کناری را صفر می کند
+  // اگر یک خانه با خانه کناری برابر باشد آن را با خانه کناری جمع می کند و حانه کناری را صفر می کند
+  for (let i = 3; i > 0; i--) {
     if (arr[i] === arr[i - 1] && arr[i] !== 0) {
       arr[i] += arr[i - 1];
       arr[i - 1] = 0;
       fillEmptyElements(arr);
-      if (i < 3) i++;
-    } else {
-      i--;
     }
   }
 }
@@ -105,15 +101,26 @@ let initialNumbers = [
 ];
 
 function fillRandomElement(array) {
-  for (let i = 0; i < 10; i++) {
-    let randomRow = Math.ceil(Math.random() * 3);
-    let randomColumn = Math.ceil(Math.random() * 3);
-    let randomElement = array[randomRow][randomColumn];
-    if (randomElement === 0) {
-      array[randomRow][randomColumn] = 2;
-      break;
-    }
-  }
+  //get a random element of array
+  const getRandomElement = (arr) => {
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    return arr[randomIndex];
+  };
+
+  //If a row has empty elements , adds the index to the array;
+  const emptyRows = array
+    .map((row, index) => (row.some((n) => n === 0) ? index : 0))
+    .filter((index) => index != 0);
+  // If there is no empty index, the operation stops
+  if (!emptyRows.length) return;
+
+  const randomRow = getRandomElement(emptyRows);
+  // get empty elements of random row
+  const emptyElementsOfRow = array[randomRow]
+    .map((n, index) => (n === 0 ? index : 0))
+    .filter((index) => index != 0);
+  const randomColumn = getRandomElement(emptyElementsOfRow);
+  array[randomRow][randomColumn] = 2;
 }
 
 function getBoxStyle(number) {
